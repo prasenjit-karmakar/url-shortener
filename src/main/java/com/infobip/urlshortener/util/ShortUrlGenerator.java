@@ -1,8 +1,11 @@
 package com.infobip.urlshortener.util;
 
+import com.google.common.hash.Hashing;
 import com.google.inject.Inject;
 import com.infobip.urlshortener.configuration.AppConfiguration;
 import com.infobip.urlshortener.configuration.ShortUrlConfiguration;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Prasenjit Karmakar
@@ -17,6 +20,6 @@ public class ShortUrlGenerator {
     }
 
     public static String getShortUrl(String url) {
-        return "";
+        return  Hashing.murmur3_32().hashString(url, StandardCharsets.UTF_8).toString();
     }
 }

@@ -12,8 +12,6 @@ public class UrlRegistrationRequest {
     @NotBlank
     @NotEmpty
     private final String url;
-    @NotBlank
-    @NotEmpty
     private final int redirectType;
 
     @JsonCreator

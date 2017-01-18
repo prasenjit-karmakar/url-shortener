@@ -23,7 +23,7 @@ public class UrlRegistrationService {
 
     public UrlRegistrationResponse registerUrl(UrlRegistrationRequest registrationRequest, User user) {
         String shortenedUrl = ShortUrlGenerator.getShortUrl(registrationRequest.getUrl());
-        boolean isRegistered = urlRepository.registerUrl(new UrlMapping(registrationRequest.getUrl(), shortenedUrl, user.getName(), getRedirectType(registrationRequest.getRedirectType())));
+        boolean isRegistered = urlRepository.registerUrl(new UrlMapping(registrationRequest.getUrl(), shortenedUrl, "1", getRedirectType(registrationRequest.getRedirectType())));
         if (isRegistered)
             return new UrlRegistrationResponse(shortenedUrl);
         else
