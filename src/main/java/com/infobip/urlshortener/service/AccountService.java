@@ -1,17 +1,16 @@
 package com.infobip.urlshortener.service;
 
 import com.google.inject.Inject;
+import com.infobip.urlshortener.configuration.AppConfiguration;
 import com.infobip.urlshortener.dto.AccountCreationRequest;
 import com.infobip.urlshortener.dto.AccountCreationResponse;
 import com.infobip.urlshortener.dto.AccountCreationSuccessResponse;
 import com.infobip.urlshortener.entity.Account;
 import com.infobip.urlshortener.repository.AccountRepository;
-import com.infobip.urlshortener.configuration.AppConfiguration;
+import com.infobip.urlshortener.repository.AccountRepositoryImpl;
 import com.infobip.urlshortener.util.AccountStatusEnum;
 import io.dropwizard.auth.basic.BasicCredentials;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
@@ -19,13 +18,11 @@ import java.util.Optional;
  * @author Prasenjit Karmakar
  */
 public class AccountService {
-    final static Logger logger = LoggerFactory.getLogger(AccountService.class);
-    private final AccountRepository accountRepository;
+    private final static AccountRepository accountRepository = new AccountRepositoryImpl();
     private final AppConfiguration configuration;
 
     @Inject
-    public AccountService(AccountRepository accountRepository, AppConfiguration configuration) {
-        this.accountRepository = accountRepository;
+    public AccountService(AppConfiguration configuration) {
         this.configuration = configuration;
     }
 
@@ -38,7 +35,7 @@ public class AccountService {
             return new AccountCreationResponse(false, AccountStatusEnum.EXISTS.getMessage());
     }
 
-    public boolean isValidCredentials(BasicCredentials basicCredentials) {
+    public static  boolean isValidCredentials(BasicCredentials basicCredentials) {
         boolean isValidCredentials = false;
         Optional<Account> account = accountRepository.getAccountById(basicCredentials.getUsername());
         if (account.isPresent() && account.get().getPassword().equals(basicCredentials.getPassword())) {

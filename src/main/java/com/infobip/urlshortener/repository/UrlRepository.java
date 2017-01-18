@@ -2,8 +2,6 @@ package com.infobip.urlshortener.repository;
 
 import com.infobip.urlshortener.entity.UrlMapping;
 
-import java.util.Map;
-
 /**
  * @author Prasenjit Karmakar
  */

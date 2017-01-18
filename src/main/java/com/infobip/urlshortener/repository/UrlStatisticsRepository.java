@@ -6,6 +6,6 @@ import java.util.Map;
  * @author Prasenjit Karmakar
  */
 public interface UrlStatisticsRepository {
-    Map<String,Integer> getStatistics(String accountId);
+    Map<String,Long> getStatistics(String accountId);
     void updateStatistics(String accountId, String url);
 }

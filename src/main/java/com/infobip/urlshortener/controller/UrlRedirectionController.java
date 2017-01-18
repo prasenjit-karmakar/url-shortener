@@ -4,13 +4,13 @@ import com.google.inject.Inject;
 import com.infobip.urlshortener.entity.UrlMapping;
 import com.infobip.urlshortener.service.UrlRedirectionService;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
+import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 /**
  * @author Prasenjit karmakar
@@ -26,13 +26,14 @@ public class UrlRedirectionController {
 
     @GET
     @Path("/{shortUrl}")
-    public Response redirect(@PathParam("shortUrl") String shortUrl, HttpServletResponse response) {
+    public Response redirect(@PathParam("shortUrl") String shortUrl) {
         UrlMapping urlMapping = urlRedirectionService.getUrlMapping(shortUrl);
         if (urlMapping != null) {
-            try {
-                response.sendRedirect(urlMapping.getUrl());
-            } catch (IOException e) {
-                return Response.status(Response.Status.NOT_FOUND).entity(Response.Status.NOT_FOUND.name()).type(MediaType.APPLICATION_JSON_TYPE).build();
+            URI uri = UriBuilder.fromUri(urlMapping.getUrl()).build();
+            if (urlMapping.getRedirectType().equals(Response.Status.FOUND.getStatusCode())) {
+                return Response.temporaryRedirect(uri).build();
+            } else if (urlMapping.getRedirectType().equals(Response.Status.MOVED_PERMANENTLY.getStatusCode())) {
+                return Response.seeOther(uri).build();
             }
         }
         return Response.status(Response.Status.NOT_FOUND).entity(Response.Status.NOT_FOUND.name()).type(MediaType.APPLICATION_JSON_TYPE).build();

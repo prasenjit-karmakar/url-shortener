@@ -2,14 +2,8 @@ package com.infobip.urlshortener.service;
 
 import com.google.inject.Inject;
 import com.infobip.urlshortener.configuration.ShortUrlConfiguration;
-import com.infobip.urlshortener.dto.UrlRegistrationRequest;
-import com.infobip.urlshortener.dto.UrlRegistrationResponse;
 import com.infobip.urlshortener.entity.UrlMapping;
 import com.infobip.urlshortener.repository.UrlRepository;
-import com.infobip.urlshortener.security.User;
-import com.infobip.urlshortener.util.ShortUrlGenerator;
-
-import javax.ws.rs.core.Response;
 
 /**
  * @author Prasenjit karmakar

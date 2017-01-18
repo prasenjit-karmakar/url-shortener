@@ -1,7 +1,6 @@
 package com.infobip.urlshortener.service;
 
 import com.google.inject.Inject;
-import com.infobip.urlshortener.repository.UrlRepository;
 import com.infobip.urlshortener.repository.UrlStatisticsRepository;
 
 import java.util.Map;
@@ -17,7 +16,7 @@ public class StatisticsService {
         this.urlStatisticsRepository = urlStatisticsRepository;
     }
 
-    public Map<String, Integer> getStatistics(String accountId) {
+    public Map<String, Long> getStatistics(String accountId) {
         return urlStatisticsRepository.getStatistics(accountId);
     }
 

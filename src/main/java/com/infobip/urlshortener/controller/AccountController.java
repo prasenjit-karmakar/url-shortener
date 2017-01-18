@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.infobip.urlshortener.dto.AccountCreationRequest;
 import com.infobip.urlshortener.dto.AccountCreationResponse;
 import com.infobip.urlshortener.service.AccountService;
-import org.springframework.http.HttpStatus;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -29,7 +28,7 @@ public class AccountController {
     }
 
     @POST
-    @Consumes("application/json")
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response createAccount(@Valid AccountCreationRequest accountCreationRequest) {
         AccountCreationResponse response = accountService.createAccount(accountCreationRequest);
         if (response.isSuccess()) {

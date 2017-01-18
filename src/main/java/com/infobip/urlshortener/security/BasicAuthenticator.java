@@ -1,6 +1,5 @@
 package com.infobip.urlshortener.security;
 
-import com.google.inject.Inject;
 import com.infobip.urlshortener.service.AccountService;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
@@ -13,12 +12,9 @@ import java.util.Optional;
  */
 public class BasicAuthenticator implements Authenticator<BasicCredentials, User> {
 
-    @Inject
-    private AccountService accountService;
-
     @Override
     public Optional<User> authenticate(BasicCredentials basicCredentials) throws AuthenticationException {
-        if (accountService.isValidCredentials(basicCredentials)) {
+        if (AccountService.isValidCredentials(basicCredentials)) {
             return Optional.of(new User(basicCredentials.getUsername()));
         }
         return Optional.empty();

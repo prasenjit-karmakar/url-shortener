@@ -2,13 +2,14 @@ package com.infobip.urlshortener.controller;
 
 
 import com.google.inject.Inject;
+import com.infobip.urlshortener.security.User;
 import com.infobip.urlshortener.service.StatisticsService;
-import com.infobip.urlshortener.service.UrlRegistrationService;
+import io.dropwizard.auth.Auth;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Map;
 
 /**
@@ -25,8 +26,13 @@ public class StatisticsController {
 
     @GET
     @Path("/{AccountId}")
-    @Consumes("application/json")
-    public Map<String, Integer> getStatistics(@PathParam("AccountId") String accountId) {
-        return null;
+    @PermitAll
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, Long> getStatistics(@PathParam("AccountId") String accountId, @Auth User user) {
+        if (accountId.equals(user.getName())) {
+            return statisticsService.getStatistics(accountId);
+        } else
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED.name(), Response.Status.UNAUTHORIZED.getStatusCode());
     }
 }

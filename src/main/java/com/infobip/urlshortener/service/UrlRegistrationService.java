@@ -1,6 +1,7 @@
 package com.infobip.urlshortener.service;
 
 import com.google.inject.Inject;
+import com.infobip.urlshortener.configuration.ShortUrlConfiguration;
 import com.infobip.urlshortener.dto.UrlRegistrationRequest;
 import com.infobip.urlshortener.dto.UrlRegistrationResponse;
 import com.infobip.urlshortener.entity.UrlMapping;
@@ -15,15 +16,18 @@ import javax.ws.rs.core.Response;
  */
 public class UrlRegistrationService {
     private final UrlRepository urlRepository;
+    private final ShortUrlConfiguration shortUrlConfiguration;
 
     @Inject
-    public UrlRegistrationService(UrlRepository urlRepository) {
+    public UrlRegistrationService(UrlRepository urlRepository, ShortUrlConfiguration shortUrlConfiguration) {
         this.urlRepository = urlRepository;
+        this.shortUrlConfiguration = shortUrlConfiguration;
     }
 
     public UrlRegistrationResponse registerUrl(UrlRegistrationRequest registrationRequest, User user) {
-        String shortenedUrl = ShortUrlGenerator.getShortUrl(registrationRequest.getUrl());
-        boolean isRegistered = urlRepository.registerUrl(new UrlMapping(registrationRequest.getUrl(), shortenedUrl, "1", getRedirectType(registrationRequest.getRedirectType())));
+        String shortenedUrl = shortUrlConfiguration.getBaseUrl()
+                .concat(ShortUrlGenerator.getShortUrl(registrationRequest.getUrl()));
+        boolean isRegistered = urlRepository.registerUrl(new UrlMapping(registrationRequest.getUrl(), shortenedUrl, user.getName(), getRedirectType(registrationRequest.getRedirectType())));
         if (isRegistered)
             return new UrlRegistrationResponse(shortenedUrl);
         else
