@@ -1,8 +1,9 @@
 package com.infobip.urlshortener.server;
 
 import com.google.inject.AbstractModule;
-import com.infobip.urlshortener.repository.AccountRepository;
-import com.infobip.urlshortener.repository.AccountRepositoryImpl;
+import com.infobip.urlshortener.configuration.AppConfiguration;
+import com.infobip.urlshortener.configuration.ShortUrlConfiguration;
+import com.infobip.urlshortener.repository.*;
 import io.dropwizard.setup.Environment;
 
 /**
@@ -21,7 +22,9 @@ public class AppModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(AppConfiguration.class).toInstance(configuration);
+        bind(ShortUrlConfiguration.class).toInstance(configuration.getShortUrlConfig());
         bind(AccountRepository.class).to(AccountRepositoryImpl.class);
-
+        bind(UrlRepository.class).to(UrlRepositoryImpl.class);
+        bind(UrlStatisticsRepository.class).to(UrlStatisticsRepositoryImpl.class);
     }
 }

@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 /**
  * @author Prasenjit Karmakar
  */
-@Path("/api/url-shortener/v0")
+@Path("/account")
 @Produces(MediaType.APPLICATION_JSON)
 public class AccountController {
 
@@ -28,7 +28,6 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @Path("/account")
     @POST
     @Consumes("application/json")
     public Response createAccount(@Valid AccountCreationRequest accountCreationRequest) {

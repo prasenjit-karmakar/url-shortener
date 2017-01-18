@@ -6,11 +6,14 @@ import com.infobip.urlshortener.dto.AccountCreationResponse;
 import com.infobip.urlshortener.dto.AccountCreationSuccessResponse;
 import com.infobip.urlshortener.entity.Account;
 import com.infobip.urlshortener.repository.AccountRepository;
-import com.infobip.urlshortener.server.AppConfiguration;
+import com.infobip.urlshortener.configuration.AppConfiguration;
 import com.infobip.urlshortener.util.AccountStatusEnum;
+import io.dropwizard.auth.basic.BasicCredentials;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 /**
  * @author Prasenjit Karmakar
@@ -33,5 +36,14 @@ public class AccountService {
             return new AccountCreationSuccessResponse(true, AccountStatusEnum.OPENED.getMessage(), account.getPassword());
         else
             return new AccountCreationResponse(false, AccountStatusEnum.EXISTS.getMessage());
+    }
+
+    public boolean isValidCredentials(BasicCredentials basicCredentials) {
+        boolean isValidCredentials = false;
+        Optional<Account> account = accountRepository.getAccountById(basicCredentials.getUsername());
+        if (account.isPresent() && account.get().getPassword().equals(basicCredentials.getPassword())) {
+            isValidCredentials = true;
+        }
+        return isValidCredentials;
     }
 }

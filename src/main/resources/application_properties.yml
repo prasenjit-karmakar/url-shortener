@@ -1,2 +1,12 @@
-defaultName: url-shortener
+defaultName: urlMapping-shortener
 passwordLength: 8
+shortUrlConfig:
+   baseUrl: http://localhost:8080/
+
+server:
+  applicationConnectors:
+  - type: http
+    port: 9001
+  adminConnectors:
+  - type: http
+    port: 9002

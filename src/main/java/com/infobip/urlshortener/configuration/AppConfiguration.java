@@ -1,4 +1,4 @@
-package com.infobip.urlshortener.server;
+package com.infobip.urlshortener.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
@@ -16,11 +16,16 @@ public class AppConfiguration extends Configuration {
     private final int passwordLength;
     @NotNull
     private final String defaultName;
+    @NotNull
+    private final ShortUrlConfiguration shortUrlConfig;
+
 
     public AppConfiguration(@JsonProperty("passwordLength") int passwordLength,
-                            @JsonProperty("defaultName") String defaultName) {
+                            @JsonProperty("defaultName") String defaultName,
+                            @JsonProperty("shortUrlConfig") ShortUrlConfiguration shortUrlConfig) {
         this.passwordLength = passwordLength;
         this.defaultName = defaultName;
+        this.shortUrlConfig = shortUrlConfig;
     }
 
     public int getPasswordLength() {
@@ -29,5 +34,9 @@ public class AppConfiguration extends Configuration {
 
     public String getDefaultName() {
         return defaultName;
+    }
+
+    public ShortUrlConfiguration getShortUrlConfig() {
+        return shortUrlConfig;
     }
 }

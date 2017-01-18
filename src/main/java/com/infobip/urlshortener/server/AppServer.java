@@ -2,6 +2,7 @@ package com.infobip.urlshortener.server;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.infobip.urlshortener.configuration.AppConfiguration;
 import io.dropwizard.setup.Environment;
 
 /**
